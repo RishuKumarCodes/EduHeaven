@@ -100,7 +100,7 @@ We welcome contributions to make **EduHaven** better for students everywhere! He
 2. **Phase 2**: Real-time study rooms, chatbot integration, and social features.
 3. **Phase 3**: Analytics, gamification, and AI-powered enhancements.
 4. **Phase 4**: Mobile app development and premium features.
-Please follow [our blueprint of Eduhaven](https://excalidraw.com/#room=3eacbf4e37a16b8d1c39,jO_VMi_FGLE5sBAQnY6FQw) for the project planning.
+Please follow [our blueprint of Eduhaven](https://excalidraw.com/#json=4xq41ilJX80oi1NSyreJ6,DbujlM3-5_8JtuIxgZCj1Q) for the project planning.
 ---
 
 ## License
