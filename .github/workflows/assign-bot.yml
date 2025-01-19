@@ -10,11 +10,11 @@ jobs:
 
     steps:
     - name: Check for "bot/assign"
-      if: ${{ contains(toLower(github.event.comment.body), 'bot/assign') }}
+      if: ${{ github.event.comment.body == 'bot/assign' || github.event.comment.body == 'BOT/ASSIGN' }}
       run: echo "Assigning issue to the comment author"
 
     - name: Assign the issue
-      if: ${{ contains(toLower(github.event.comment.body), 'bot/assign') }}
+      if: ${{ github.event.comment.body == 'bot/assign' || github.event.comment.body == 'BOT/ASSIGN' }}
       uses: kentaro-m/auto-assign@v2
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
