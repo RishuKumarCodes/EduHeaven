@@ -10,12 +10,12 @@ jobs:
 
     steps:
     - name: Check for "bot/assign"
-      if: ${{ github.event.comment.body == 'bot/assign' }}
-      run: |
-        echo "Assigning issue to the comment author"
+      if: ${{ contains(toLower(github.event.comment.body), 'bot/assign') }}
+      run: echo "Assigning issue to the comment author"
+
     - name: Assign the issue
-      if: ${{ github.event.comment.body == 'bot/assign' }}
-      uses: actions-ecosystem/action-assign@v2
+      if: ${{ contains(toLower(github.event.comment.body), 'bot/assign') }}
+      uses: kentaro-m/auto-assign@v2
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         assignees: ${{ github.event.comment.user.login }}
