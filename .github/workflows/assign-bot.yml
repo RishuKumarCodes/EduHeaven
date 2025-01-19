@@ -6,12 +6,45 @@ on:
 
 jobs:
   assign:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
-    - name: Assign the issue if comment is "bot/assign"
-      if: ${{ github.event.comment.body == 'bot/assign' || github.event.comment.body == 'BOT/ASSIGN' }}
-      uses: actions-ecosystem/action-assign@v1
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        assignees: ${{ github.event.comment.user.login }}
+    # Step 1: Install GitHub CLI (Platform-specific)
+    - name: Install GitHub CLI on Linux
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gh
+
+    - name: Install GitHub CLI on Windows
+      if: runner.os == 'Windows'
+      run: |
+        choco install gh -y
+
+    - name: Install GitHub CLI on macOS
+      if: runner.os == 'macOS'
+      run: |
+        brew install gh
+
+    # Step 2: Check the comment content
+    - name: Check if the comment is 'bot/assign'
+      id: check-comment
+      shell: bash
+      run: |
+        if [[ "${{ github.event.comment.body }}" =~ ^([Bb][Oo][Tt]/[Aa][Ss][Ss][Ii][Gg][Nn])$ ]]; then
+          echo "::set-output name=assign::true"
+        else
+          echo "::set-output name=assign::false"
+        fi
+
+    # Step 3: Assign the issue
+    - name: Assign the issue to the commenter
+      if: steps.check-comment.outputs.assign == 'true'
+      run: |
+        gh issue edit ${{ github.event.issue.number }} --add-assignee ${{ github.event.comment.user.login }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
