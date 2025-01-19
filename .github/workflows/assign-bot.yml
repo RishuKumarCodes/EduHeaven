@@ -1,0 +1,21 @@
+name: Assign Bot
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check for "bot/assign"
+      if: ${{ github.event.comment.body == 'bot/assign' }}
+      run: |
+        echo "Assigning issue to the comment author"
+    - name: Assign the issue
+      if: ${{ github.event.comment.body == 'bot/assign' }}
+      uses: actions-ecosystem/action-assign@v2
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        assignees: ${{ github.event.comment.user.login }}
