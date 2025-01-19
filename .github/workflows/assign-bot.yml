@@ -15,7 +15,7 @@ jobs:
 
     - name: Assign the issue
       if: ${{ github.event.comment.body == 'bot/assign' || github.event.comment.body == 'BOT/ASSIGN' }}
-      uses: kentaro-m/auto-assign@v2
+      uses: simonthehat/action-assign@v1
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         assignees: ${{ github.event.comment.user.login }}
