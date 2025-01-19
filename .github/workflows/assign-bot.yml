@@ -6,45 +6,28 @@ on:
 
 jobs:
   assign:
-    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
-    # Step 1: Install GitHub CLI (Platform-specific)
-    - name: Install GitHub CLI on Linux
-      if: runner.os == 'Linux'
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y gh
-
-    - name: Install GitHub CLI on Windows
-      if: runner.os == 'Windows'
-      run: |
-        choco install gh -y
-
-    - name: Install GitHub CLI on macOS
-      if: runner.os == 'macOS'
-      run: |
-        brew install gh
-
-    # Step 2: Check the comment content
-    - name: Check if the comment is 'bot/assign'
-      id: check-comment
-      shell: bash
-      run: |
-        if [[ "${{ github.event.comment.body }}" =~ ^([Bb][Oo][Tt]/[Aa][Ss][Ss][Ii][Gg][Nn])$ ]]; then
-          echo "::set-output name=assign::true"
-        else
-          echo "::set-output name=assign::false"
-        fi
-
-    # Step 3: Assign the issue
-    - name: Assign the issue to the commenter
-      if: steps.check-comment.outputs.assign == 'true'
-      run: |
-        gh issue edit ${{ github.event.issue.number }} --add-assignee ${{ github.event.comment.user.login }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+    - name: Assign the issue if comment is "bot/assign"
+      if: ${{ contains(toLowerCase(github.event.comment.body), 'bot/assign') }}
+      uses: actions-ecosystem/action-assign@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        assignees: ${{ github.event.comment.user.login }}
+    
+    - name: Comment on failure
+      if: failure()
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.name,
+            body: 'Unable to assign the issue. This could be due to permissions or other issues.'
+          })
