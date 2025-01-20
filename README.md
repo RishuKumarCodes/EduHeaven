@@ -64,11 +64,11 @@
    ```bash
    # Start backend server
    cd backend
-   npm run dev
+   npm start
 
    # Start frontend server
    cd ../frontend
-   npm start
+   npm run dev
    ```
 ---
 
@@ -100,7 +100,7 @@ We welcome contributions to make **EduHaven** better for students everywhere! He
 2. **Phase 2**: Real-time study rooms, chatbot integration, and social features.
 3. **Phase 3**: Analytics, gamification, and AI-powered enhancements.
 4. **Phase 4**: Mobile app development and premium features.
-Please follow [our blueprint of Eduhaven](https://excalidraw.com/#json=4xq41ilJX80oi1NSyreJ6,DbujlM3-5_8JtuIxgZCj1Q) for the project planning.
+Please follow [our blueprint of Eduhaven](https://excalidraw.com/#json=H1t-vyO2QOwZuRaIa9w1-,MdjcBH2bh2iS-wsubvrY4A) for the project planning.
 ---
 
 ## License
