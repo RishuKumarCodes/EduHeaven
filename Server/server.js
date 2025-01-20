@@ -1,13 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
+
 const taskRoutes = require("./Routes/taskRoute");
 const noteRoutes = require("./Routes/noteRoute");
+const userRoutes = require("./Routes/userRoute")
 
 const dotenv = require("dotenv");
 const cors = require('cors');
 
 dotenv.config();
-
 
 
 const app = express();
@@ -29,6 +30,7 @@ app.use(express.json());
 //Routing
 app.use("/api",taskRoutes);
 app.use("/api",noteRoutes);
+app.use("/api",userRoutes);
 
 //Api Testing Route
 app.get("/",(req,res)=>{
@@ -36,6 +38,6 @@ app.get("/",(req,res)=>{
 })
 
 //Server Listening
-app.listen(PORT,(req,res)=>{
+app.listen(PORT, (req,res)=>{
     console.log(`Server running on port ${PORT}`)
 })

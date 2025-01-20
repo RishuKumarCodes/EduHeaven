@@ -4,6 +4,7 @@ import Layout from './components/Layout';
 import StudyRoom from './pages/StudyRoom';
 import Dashboard from './pages/Dashboard';
 import GameRoom from './pages/GameRoom';
+import SignUp from './pages/Authentication';
 // import Login from './pages/Login';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
           <Route index element={<StudyRoom />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="games" element={<GameRoom />} />
+          <Route path="authenticate" element={<SignUp />} />
         </Route>
       </Routes>
     </BrowserRouter>
