@@ -101,7 +101,8 @@ We welcome contributions to make **EduHaven** better for students everywhere! He
 3. **Phase 3**: Analytics, gamification, and AI-powered enhancements.
 4. **Phase 4**: Mobile app development and premium features.
 
-Please follow [our blueprint of Eduhaven](https://excalidraw.com/#json=H1t-vyO2QOwZuRaIa9w1-,MdjcBH2bh2iS-wsubvrY4A) for the project planning.
+#### Please follow [our blueprint of Eduhaven](https://excalidraw.com/#json=H1t-vyO2QOwZuRaIa9w1-,MdjcBH2bh2iS-wsubvrY4A) for the project planning.
+
 ---
 
 ## License
