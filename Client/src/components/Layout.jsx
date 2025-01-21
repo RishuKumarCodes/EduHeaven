@@ -20,52 +20,49 @@ function Layout() {
           <div className="space-y-6">
             <Link
               to="/"
-              className={`block p-3 rounded-lg transition-colors ${
-                location.pathname === "/"
-                  ? "bg-purple-600"
-                  : "hover:bg-gray-700"
-              }`}
+              className={`block p-3 rounded-lg transition-colors ${location.pathname === "/"
+                ? "bg-purple-600"
+                : "hover:bg-gray-700"
+                }`}
             >
               <BookOpen className="w-6 h-6" />
             </Link>
 
             <Link
               to="/dashboard"
-              className={`block p-3 rounded-lg transition-colors ${
-                location.pathname === "/dashboard"
-                  ? "bg-purple-600"
-                  : "hover:bg-gray-700"
-              }`}
+              className={`block p-3 rounded-lg transition-colors ${location.pathname === "/dashboard"
+                ? "bg-purple-600"
+                : "hover:bg-gray-700"
+                }`}
             >
               <BarChart2 className="w-6 h-6" />
             </Link>
 
             <Link
               to="/games"
-              className={`block p-3 rounded-lg transition-colors ${
-                location.pathname === "/games"
-                  ? "bg-purple-600"
-                  : "hover:bg-gray-700"
-              }`}
+              className={`block p-3 rounded-lg transition-colors ${location.pathname === "/games"
+                ? "bg-purple-600"
+                : "hover:bg-gray-700"
+                }`}
             >
               <GamepadIcon className="w-6 h-6" />
             </Link>
 
             <Link
               to="/authenticate"
-              className={`block p-3 rounded-lg transition-colors ${
-                location.pathname === "/authenticate"
-                  ? "bg-purple-600"
-                  : "hover:bg-gray-700"
-              }`}
+              className={`block p-3 rounded-lg transition-colors ${location.pathname === "/authenticate"
+                ? "bg-purple-600"
+                : "hover:bg-gray-700"
+                }`}
             >
               <User className="w-6 h-6" />
             </Link>
           </div>
         </div>
-        <button className="p-3 hover:bg-gray-700 rounded-lg transition-colors">
+
+        <Link className="p-3 hover:bg-gray-700 rounded-lg transition-colors" to="/signout">
           <LogOut className="w-6 h-6" />
-        </button>
+        </Link>
       </nav>
 
       {/* Main Content */}
@@ -77,3 +74,4 @@ function Layout() {
 }
 
 export default Layout;
+
