@@ -12,9 +12,9 @@ function Layout() {
         <div className="space-y-8">
           <div className="p-2">
             <img
-              src="https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?w=48&h=48&fit=crop&crop=faces"
+              src="https://cdn-icons-png.flaticon.com/512/2784/2784403.png"
               alt="Logo"
-              className="w-12 h-12 rounded-full"
+              className="w-12 h-8 rounded-full"
             />
           </div>
           <div className="space-y-6">
