@@ -116,7 +116,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## Contact
-For questions or suggestions, feel free to reach out on our[ WhatsApp group](https://chat.whatsapp.com/D2YldBvUAigD2FOzFQ8U5X)
+
 
 Let’s make learning fun and productive!
