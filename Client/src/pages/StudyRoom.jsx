@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { User } from 'lucide-react';
 import { Link } from "react-router-dom";
 import EventPopup from '../components/eventPopup'
+import { parseISO, isSameDay } from "date-fns"; 
+import axios from "axios";
+
 function StudyRoom() {
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 }); // Start timer from zero
   const [isRunning, setIsRunning] = useState(false);
@@ -15,8 +18,8 @@ function StudyRoom() {
   const firstDayOfMonth = new Date(year, month, 1).getDay(); // Day of the week 
   const daysArray = [...Array(daysInMonth).keys()].map((day) => day + 1); // Days [1, 2, ..., daysInMonth]
   const [selectedDay, setSelectedDay] = useState(null); // Selected day for the popup
+  const [events, setEvents] = useState([]);
 
-  // Dummy events for demonstration
   
 
     useEffect(() => {
@@ -58,22 +61,39 @@ function StudyRoom() {
   const handleNextMonth = () => {
     setCurrentDate(new Date(year, month + 1, 1));
   };
-  const events = {
-    5: { title: "Meeting", description: "Project discussion", time: "10:00 AM", location: "Zoom" },
-    15: { title: "Workshop", description: "React Workshop", time: "2:00 PM", location: "Office" },
-  };
 
-  const handleDayClick = (day) => {
-     const event = events[day] || { title: "No events for this day." };
-    if (event) {
-      setSelectedDay({ day, ...event }); // Set the selected day's event data
+  const fetchEvents = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/events");
+      if (response.data.success) {
+        setEvents(response.data.data);
+      } else {
+        console.error("Failed to fetch events:", response.data.error);
+      }
+    } catch (error) {
+      console.error("Error fetching events:", error.message);
     }
   };
 
-  const handleClosePopup = () => {
-    setSelectedDay(null); // Close the popup
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+
+
+  const handleDayClick = (day) => {
+    const date = `${currentDate.getFullYear()}-${String(
+      currentDate.getMonth() + 1
+    ).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    const event = events.find((e) => e.date === date);
+    setSelectedDay(date);
+    setSelectedEvent(event || { date });
   };
 
+  const handleClosePopup = () => {
+    setSelectedDay(null);
+    setSelectedEvent(null);
+  };
   // Render blank spaces for the first week
   const blankDays = Array(firstDayOfMonth).fill(null);
 
@@ -177,8 +197,16 @@ function StudyRoom() {
             currentDate.getMonth() === new Date().getMonth() &&
             currentDate.getFullYear() === new Date().getFullYear();
 
-          const hasEvent = events.hasOwnProperty(day);
+            const hasEvent = Object.values(events).some((event) => {
+              const eventDate = parseISO(event.date); // Convert ISO string to Date object
+              
 
+              return (
+                eventDate.getDate() === day &&
+                eventDate.getMonth() === currentDate.getMonth() &&
+                eventDate.getFullYear() === currentDate.getFullYear()
+              );
+            });
           return (
             <div
               key={day}
@@ -196,7 +224,16 @@ function StudyRoom() {
           </div>
         </div>
       </div>
-      {selectedDay && <EventPopup event={selectedDay} onClose={handleClosePopup} />}
+      {selectedDay && (
+       
+        <EventPopup
+          date={selectedDay}
+          onClose={handleClosePopup}
+          refreshEvents={fetchEvents} // Refresh events after changes
+        />
+      )
+      }
+
 
             {/* Discussion Rooms */}
             <div className="grid grid-cols-3 gap-8">
