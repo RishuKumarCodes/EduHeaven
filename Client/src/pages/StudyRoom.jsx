@@ -5,8 +5,16 @@ import { Link } from "react-router-dom";
 function StudyRoom() {
     const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 }); // Start timer from zero
     const [isRunning, setIsRunning] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+
 
     useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            setIsLoggedIn(true); // User is logged in
+        }
+
         let interval;
         if (isRunning) {
             interval = setInterval(() => {
@@ -46,10 +54,12 @@ function StudyRoom() {
                     <span className="text-gray-400">Next goal: 2 hours</span>
                     <span className="text-gray-400">Total uptime today: 4 hours</span>
                 </div>
-                <Link className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg flex items-center gap-2" to="/authenticate">
-                    <User className="w-5 h-5" />
-                    Login
-                </Link>
+                {!isLoggedIn && (
+                    <Link className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg flex items-center gap-2" to="/authenticate">
+                        <User className="w-5 h-5" />
+                        Login
+                    </Link>
+                )}
             </div>
 
             {/* Timer Section */}
