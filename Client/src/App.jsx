@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
-import StudyRoom from './pages/StudyRoom';
+import StudyRoom from './pages//studyRoom/StudyRoom.jsx';
 import Dashboard from './pages/Dashboard';
 import GameRoom from './pages/GameRoom';
 import Signout from './Auth/Signout';

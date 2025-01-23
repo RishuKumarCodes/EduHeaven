@@ -11,8 +11,10 @@ const EventPopup = ({ date, onClose, refreshEvents }) => {
     const fetchEvent = async () => {
       try {
         console.log(date);
-        const response = await axios.get(`http://localhost:3000/events-by-date?date=${date}`);
-        const eventData = response.data.data[0]// Assuming one event per date
+        const response = await axios.get(
+          `http://localhost:3000/events-by-date?date=${date}`
+        );
+        const eventData = response.data.data[0]; // Assuming one event per date
         setId(eventData._id);
         console.log(response);
         if (eventData) {
@@ -40,8 +42,7 @@ const EventPopup = ({ date, onClose, refreshEvents }) => {
       const eventData = {
         title,
         time,
-        date
-       
+        date,
       };
 
       if (id) {
