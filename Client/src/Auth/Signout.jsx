@@ -14,7 +14,7 @@ const Signout = () => {
       localStorage.removeItem("authToken");
 
       // Redirect to the login page
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -24,7 +24,8 @@ const Signout = () => {
     // Redirect if user is not authenticated (optional)
     const token = localStorage.getItem("authToken");
     if (!token) {
-      navigate("/authenticate");
+      // navigate("/");
+      console.warn("No token found. User might already be logged out.")
     }
   }, [navigate]);
 
