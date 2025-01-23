@@ -1,13 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { User } from 'lucide-react';
 import { Link } from "react-router-dom";
+import EventPopup from '../components/eventPopup'
+import { parseISO, isSameDay } from "date-fns"; 
+import axios from "axios";
 
 function StudyRoom() {
-    const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 }); // Start timer from zero
-    const [isRunning, setIsRunning] = useState(false);
+    // const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 }); // Start timer from zero
+    // const [isRunning, setIsRunning] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
+  const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 }); // Start timer from zero
+  const [isRunning, setIsRunning] = useState(false);
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  // Get the current month, year, and day information
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+  const daysInMonth = new Date(year, month + 1, 0).getDate(); // Last day of the month
+  const firstDayOfMonth = new Date(year, month, 1).getDay(); // Day of the week 
+  const daysArray = [...Array(daysInMonth).keys()].map((day) => day + 1); // Days [1, 2, ..., daysInMonth]
+  const [selectedDay, setSelectedDay] = useState(null); // Selected day for the popup
+  const [events, setEvents] = useState([]);
+
+  
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -35,16 +53,59 @@ function StudyRoom() {
         return () => clearInterval(interval);
     }, [isRunning]);
 
-    // const handleStart = () => setIsRunning(true);
+  // const handleStart = () => setIsRunning(true);
 
     const handleStartPause = () => {
         setIsRunning((prev) => !prev); // Toggle between start and pause
     };
 
-    const handleReset = () => {
-        setIsRunning(false);
-        setTime({ hours: 0, minutes: 0, seconds: 0 }); // Reset timer to zero
-    };
+  const handleReset = () => {
+    setIsRunning(false);
+    setTime({ hours: 0, minutes: 0, seconds: 0 }); // Reset timer to zero
+  };
+
+  const handlePrevMonth = () => {
+    setCurrentDate(new Date(year, month - 1, 1));
+  };
+
+  const handleNextMonth = () => {
+    setCurrentDate(new Date(year, month + 1, 1));
+  };
+
+  const fetchEvents = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/events");
+      if (response.data.success) {
+        setEvents(response.data.data);
+      } else {
+        console.error("Failed to fetch events:", response.data.error);
+      }
+    } catch (error) {
+      console.error("Error fetching events:", error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+
+
+  const handleDayClick = (day) => {
+    const date = `${currentDate.getFullYear()}-${String(
+      currentDate.getMonth() + 1
+    ).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    const event = events.find((e) => e.date === date);
+    setSelectedDay(date);
+    setSelectedEvent(event || { date });
+  };
+
+  const handleClosePopup = () => {
+    setSelectedDay(null);
+    setSelectedEvent(null);
+  };
+  // Render blank spaces for the first week
+  const blankDays = Array(firstDayOfMonth).fill(null);
 
     return (
         <div className="space-y-8">
@@ -90,102 +151,101 @@ function StudyRoom() {
                 </div>
             </div>
 
-            {/* Notes and Todos */}
-            <div className="grid grid-cols-1 gap-8">
-                {/* Other sections */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="bg-gray-800 p-8 rounded-xl flex flex-col items-center justify-center space-y-4">
-                        <h2 className="text-xl text-white">Add new tasks</h2>
-                        <button className="bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-lg">
-                            +
-                        </button>
-                    </div>
-                    <div className="bg-gray-800 p-8 rounded-xl flex flex-col items-center justify-center space-y-4">
-                        <h2 className="text-xl text-white">Add new note</h2>
-                        <button className="bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-lg">
-                            +
-                        </button>
-                    </div>
-                </div>
-                <div className="bg-gray-800 p-8 rounded-xl shadow-lg">
-                    <h1 className="text-3xl font-semibold text-white">Calendar</h1>
-                    <h2 className="text-xl text-gray-300">Today's Wednesday</h2>
-                    <h3 className="text-xl text-gray-400 mb-4">9:45 PM</h3>
-                    <br />
-                    <div className="calendar space-y-4">
-                        <div className="grid grid-cols-7 gap-2">
-                            {/* Day labels */}
-                            <div className="text-center text-sm font-bold text-gray-300">
-                                Sun
-                            </div>
-                            <div className="text-center text-sm font-bold text-gray-300">
-                                Mon
-                            </div>
-                            <div className="text-center text-sm font-bold text-gray-300">
-                                Tue
-                            </div>
-                            <div className="text-center text-sm font-bold text-gray-300">
-                                Wed
-                            </div>
-                            <div className="text-center text-sm font-bold text-gray-300">
-                                Thu
-                            </div>
-                            <div className="text-center text-sm font-bold text-gray-300">
-                                Fri
-                            </div>
-                            <div className="text-center text-sm font-bold text-gray-300">
-                                Sat
-                            </div>
-
-                            {/* Calendar Days */}
-                            <div className="flex items-center justify-center p-3 rounded-lg text-white bg-purple-600 hover:bg-purple-700 cursor-pointer transition-all duration-200 ease-in-out">
-                                1
-                            </div>
-                            <div className="flex items-center justify-center p-3 rounded-lg text-white bg-gray-700 hover:bg-gray-600 cursor-pointer transition-all duration-200 ease-in-out">
-                                2
-                            </div>
-                            <div className="flex items-center justify-center p-3 rounded-lg text-white bg-gray-700 hover:bg-gray-600 cursor-pointer transition-all duration-200 ease-in-out">
-                                3
-                            </div>
-                            <div className="flex items-center justify-center p-3 rounded-lg text-white bg-purple-600 hover:bg-purple-700 cursor-pointer transition-all duration-200 ease-in-out">
-                                4
-                            </div>
-                            <div className="flex items-center justify-center p-3 rounded-lg text-white bg-gray-700 hover:bg-gray-600 cursor-pointer transition-all duration-200 ease-in-out">
-                                5
-                            </div>
-                            <div className="flex items-center justify-center p-3 rounded-lg text-white bg-gray-700 hover:bg-gray-600 cursor-pointer transition-all duration-200 ease-in-out">
-                                6
-                            </div>
-                            <div className="flex items-center justify-center p-3 rounded-lg text-white bg-purple-600 hover:bg-purple-700 cursor-pointer transition-all duration-200 ease-in-out">
-                                7
-                            </div>
-
-                            {/* More days in the calendar */}
-                            <div className="flex items-center justify-center p-3 rounded-lg text-white bg-gray-700 hover:bg-gray-600 cursor-pointer transition-all duration-200 ease-in-out">
-                                8
-                            </div>
-                            <div className="flex items-center justify-center p-3 rounded-lg text-white bg-gray-700 hover:bg-gray-600 cursor-pointer transition-all duration-200 ease-in-out">
-                                9
-                            </div>
-                            <div className="flex items-center justify-center p-3 rounded-lg text-white bg-gray-700 hover:bg-gray-600 cursor-pointer transition-all duration-200 ease-in-out">
-                                10
-                            </div>
-                            <div className="flex items-center justify-center p-3 rounded-lg text-white bg-gray-700 hover:bg-gray-600 cursor-pointer transition-all duration-200 ease-in-out">
-                                11
-                            </div>
-                            <div className="flex items-center justify-center p-3 rounded-lg text-white bg-gray-700 hover:bg-gray-600 cursor-pointer transition-all duration-200 ease-in-out">
-                                12
-                            </div>
-                            <div className="flex items-center justify-center p-3 rounded-lg text-white bg-gray-700 hover:bg-gray-600 cursor-pointer transition-all duration-200 ease-in-out">
-                                13
-                            </div>
-                            <div className="flex items-center justify-center p-3 rounded-lg text-white bg-gray-700 hover:bg-gray-600 cursor-pointer transition-all duration-200 ease-in-out">
-                                14
-                            </div>
-                        </div>
-                    </div>
-                </div>
+      {/* Notes and Todos */}
+      <div className="grid grid-cols-1 gap-8">
+        {/* Other sections */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="bg-gray-800 p-8 rounded-xl flex flex-col items-center justify-center space-y-4">
+            <h2 className="text-xl text-white">Add new tasks</h2>
+            <button className="bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-lg">
+              +
+            </button>
+          </div>
+          <div className="bg-gray-800 p-8 rounded-xl flex flex-col items-center justify-center space-y-4">
+            <h2 className="text-xl text-white">Add new note</h2>
+            <button className="bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-lg">
+              +
+            </button>
+          </div>
+        </div>
+        <div className="bg-gray-800 p-8 rounded-xl shadow-lg">
+          <h1 className="text-3xl font-semibold text-white">Calendar</h1>
+          <h2 className="text-xl text-gray-300">Today's {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][currentDate.getDay()]}</h2>
+          <h3 className="text-xl text-gray-400 mb-4"> {new Date(currentTime.getTime()).toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+          })}</h3>
+          <br />
+          <div className="p-4">
+            <div className="flex justify-between items-center mb-4">
+              <button onClick={handlePrevMonth} className="px-4 py-2 bg-purple-700 rounded">
+                Prev
+              </button>
+              <h2 className="text-lg font-bold">
+                {currentDate.toLocaleString("default", { month: "long" })} {year}
+              </h2>
+              <button onClick={handleNextMonth} className="px-4 py-2 bg-purple-700 rounded">
+                Next
+              </button>
             </div>
+            <div className="grid grid-cols-7 gap-2">
+              {/* Day Labels */}
+              {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+                <div key={day} className="text-center text-sm font-bold text-gray-500">
+                  {day}
+                </div>
+              ))}
+
+              {/* Blank Days */}
+              {blankDays.map((_, index) => (
+                <div key={`blank-${index}`} className="p-3"></div>
+              ))}
+
+              {/* Calendar Days */}
+              {daysArray.map((day) => {
+          const isToday =
+            day === new Date().getDate() &&
+            currentDate.getMonth() === new Date().getMonth() &&
+            currentDate.getFullYear() === new Date().getFullYear();
+
+            const hasEvent = Object.values(events).some((event) => {
+              const eventDate = parseISO(event.date); // Convert ISO string to Date object
+              
+
+              return (
+                eventDate.getDate() === day &&
+                eventDate.getMonth() === currentDate.getMonth() &&
+                eventDate.getFullYear() === currentDate.getFullYear()
+              );
+            });
+          return (
+            <div
+              key={day}
+              onClick={() => handleDayClick(day)}
+              className={`flex items-center justify-center p-3 rounded-lg text-white cursor-pointer transition-all duration-200 ease-in-out 
+                ${isToday ? "bg-purple-600 hover:bg-purple-700" : ""}
+                ${hasEvent && !isToday ? "bg-purple-500 hover:bg-purple-700" : ""}
+                ${!isToday && !hasEvent ? "bg-gray-700 hover:bg-purple-600" : ""}`}
+            >
+              {day}
+            </div>
+          );
+        })}
+            </div>
+          </div>
+        </div>
+      </div>
+      {selectedDay && (
+       
+        <EventPopup
+          date={selectedDay}
+          onClose={handleClosePopup}
+          refreshEvents={fetchEvents} // Refresh events after changes
+        />
+      )
+      }
+
 
             {/* Discussion Rooms */}
             <div className="grid grid-cols-3 gap-8">
