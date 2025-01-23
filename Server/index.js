@@ -2,7 +2,8 @@ import express from "express";
 import { ConnectDB } from "./Database/Db.js";
 import cors from "cors";
 import UserRoutes from "./Routes/UserRoutes.js";
-import TodoRoutes from "./Routes/ToDoRoutes.js"
+import TodoRoutes from "./Routes/ToDoRoutes.js";
+import EventRoutes from './Routes/EventRoutes.js';
 import NotesRoutes from "./Routes/NotesRoutes.js"
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
@@ -31,6 +32,7 @@ app.get("/", (req, res) => {
 app.use("/", UserRoutes);
 app.use("/",TodoRoutes);
 app.use("/",NotesRoutes)
+app.use("/",EventRoutes);
 
 // Start the server
 app.listen(port, () => {
