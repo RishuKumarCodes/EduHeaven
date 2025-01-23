@@ -8,7 +8,7 @@ export const getAllTodos = async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 };
-
+ 
 export const getTodoById = async (req, res) => {
     try {
         const task = await Task.findById(req.params.id);
