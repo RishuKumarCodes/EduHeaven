@@ -5,18 +5,6 @@ import { FcGoogle } from "react-icons/fc";
 // import { signInWithPopup } from "firebase/auth";
 // import { auth, googleProvider } from "./firebase-config";
 
-const handleGoogleLogin = async () => {
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const user = result.user; // Firebase user object
-      console.log("Google Sign-In Success:", user);
-      alert(`Welcome ${user.displayName}!`);
-      localStorage.setItem("token", user.accessToken);
-    } catch (error) {
-      console.error("Google Sign-In Error:", error.message);
-      alert("Failed to sign in with Google. Please try again.");
-    }
-  };
 const Authenticate = () => {
     const [isSignup, setIsSignup] = useState(true); // Track whether it's login or signup
     const [showPassword, setShowPassword] = useState(false); // Track password visibility
