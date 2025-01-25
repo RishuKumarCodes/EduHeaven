@@ -7,7 +7,7 @@ import MusicRoom from './pages/MusicRoom'
 import Signout from './Auth/Signout';
 import SignUp from './Auth/Authenticate.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
-
+import PageNotFound from '../src/pages/PageNotFound'
 
 function App() {
   return (
@@ -22,6 +22,7 @@ function App() {
           {/* Unnecessary / removed. http://localhost:5173/signout loads after this, button is inactive right now */}
           <Route path="signout" element={<Signout />} /> 
           <Route path="profile" element={<ProfilePage />} />
+          <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
