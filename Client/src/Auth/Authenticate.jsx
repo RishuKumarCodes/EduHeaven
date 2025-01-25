@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { FcGoogle } from "react-icons/fc";
+// import { signInWithPopup } from "firebase/auth";
+// import { auth, googleProvider } from "./firebase-config";
 
 const Authenticate = () => {
     const [isSignup, setIsSignup] = useState(true); // Track whether it's login or signup
@@ -11,35 +14,39 @@ const Authenticate = () => {
         formState: { errors, isSubmitting },
         reset,
     } = useForm();
+    const [rememberMe, setRememberMe] = useState(false);
+
 
     const onSubmit = async (data) => {
         console.log("Form submitted:", data);
         try {
-            const url = isSignup ? "http://localhost:3000/signup" : "http://localhost:3000/login";
+            const url = isSignup ? `${process.env.REACT_APP_API_BASE_URL}/signup` : `${process.env.REACT_APP_API_BASE_URL}/login`;
             const response = await axios.post(url, data);
             console.log(response.data);
             alert(`${isSignup ? "Signup" : "Login"} successful!`);
             reset(); // Clear form after successful submission
-            const token = response.data.token;
-            if (token) {
-                localStorage.setItem("token", token);
-                // Redirect to dashboard
-                window.location.href = "/";
+            localStorage.setItem("token", response.data.token);
+            if (rememberMe) {
+                localStorage.setItem("rememberMe", "true");
             }
         } catch (error) {
             console.error(`${isSignup ? "Signup" : "Login"} failed:`, error.response?.data || error.message);
+            alert(error.response?.data.message || "An error occurred. Please try again.");
         }
     };
+    
 
     return (
-        <div className="h-5/6 flex justify-center items-center ">
+        <div className="h-full flex justify-center items-center ">
             <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
-                <div className="flex justify-center mb-6">
+                <div className="flex justify-center mb-6 mt-3">
                     <button
                         className={`w-1/2 py-2 px-4 font-semibold rounded-l-md ${isSignup ? "bg-indigo-600 text-white" : "bg-gray-300 text-gray-700"
                             }`}
                         onClick={() => setIsSignup(true)}
                     >
+
+                        
                         Sign Up
                     </button>
                     <button
@@ -50,6 +57,16 @@ const Authenticate = () => {
                         Log In
                     </button>
                 </div>
+
+                {/* Google Login Button */}
+                <button
+  onClick={handleGoogleLogin}
+  className="flex items-center justify-center w-full py-3 mb-6 text-gray-700 bg-white border border-gray-300 rounded-lg hover:shadow-md hover:bg-gray-100 transition duration-200"
+>
+  <FcGoogle className="text-2xl mr-2" />
+  <span className="text-sm font-medium">Sign in / login with Google</span>
+</button>
+
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                     <div>
@@ -100,7 +117,7 @@ const Authenticate = () => {
                             <input
                                 id="password"
                                 type={showPassword ? "text" : "password"}
-                                placeholder="********"
+                                placeholder=""
                                 {...register("Password", {
                                     required: "Password is required",
                                     minLength: {
@@ -120,7 +137,19 @@ const Authenticate = () => {
                             {errors.Password && <p className="text-red-500 text-sm mt-1">{errors.Password.message}</p>}
                         </div>
                     </div>
-
+                      {/* Remember Me Option */}
+                      <div className="flex items-center">
+                        <input
+                            type="checkbox"
+                            id="rememberMe"
+                            checked={rememberMe}
+                            onChange={() => setRememberMe(!rememberMe)}
+                            className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                        />
+                        <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-900">
+                            Remember Me
+                        </label>
+                    </div>
                     <div>
                         <button
                             type="submit"
