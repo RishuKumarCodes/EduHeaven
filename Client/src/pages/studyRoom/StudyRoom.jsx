@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { User, Headphones } from "lucide-react";
 import { Link } from "react-router-dom";
 import Ai from "./AiChatbot.jsx";
@@ -7,6 +7,8 @@ import Calender from "./CalendarComponent.jsx";
 import TimerComponent from "./TimerComponent.jsx";
 import NotesComponent from "./NotesComponent.jsx";
 import TodoComponent from "./TodoComponent.jsx";
+
+
 
 // import axios from "axios";
 
@@ -25,37 +27,11 @@ function StudyRoom() {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Study Room</h1>
         <div className="flex items-center">
+         
           <span className="text-gray-400">Total uptime today: 4 hours</span>
           {/* ai */}
           <div>
             <Ai onShowId={setSelectedId} />
-            {/* {selectedId && (
-              <dialog
-                id="my_modal_1"
-                className="modal backdrop:bg-black/50"
-                open
-              >
-                <div className="modal-box bg-gray-900 text-white rounded-xl shadow-2xl p-8 max-w-lg mx-auto">
-                  <h3 className="font-extrabold text-3xl mb-6 text-purple-400">
-                    Element ID Display
-                  </h3>
-                  <p className="py-4 text-gray-300 leading-relaxed">
-                    The clicked element ID is:{" "}
-                    <span className="text-green-400 font-bold">
-                      {selectedId}
-                    </span>
-                  </p>
-                  <div className="modal-action flex justify-end">
-                    <button
-                      onClick={() => setSelectedId("")}
-                      className="bg-purple-600 hover:bg-purple-500 px-6 py-3 rounded-full text-white font-semibold transition-all duration-300 ease-in-out shadow-md transform hover:scale-105"
-                    >
-                      Close
-                    </button>
-                  </div>
-                </div>
-              </dialog>
-            )} */}
           </div>
         </div>
         {!isLoggedIn && (
