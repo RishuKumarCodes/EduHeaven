@@ -69,7 +69,7 @@ const ProfilePage = () => {
         <div className="flex flex-col items-center -mt-16">
           <div className="w-32 h-32 rounded-full border-4 border-white bg-gray-300 overflow-hidden shadow-lg">
             <img
-              src={user.UserProfile || "https://via.placeholder.com/150"}
+              src={user.UserProfile || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiy8iT29CR45csg6PAhsSjvtiijZXE8JfxnA&s"}
               alt="Profile Avatar"
               className="w-full h-full object-cover"
             />

@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { BarChart2, BookOpen, GamepadIcon, LogIn, User } from "lucide-react";
+import { BarChart2, BookOpen, GamepadIcon, LogIn, User,Headphones } from "lucide-react";
 
 function Layout() {
   const location = useLocation();
@@ -46,6 +46,16 @@ function Layout() {
                 }`}
             >
               <GamepadIcon className="w-6 h-6" />
+            </Link>
+
+            <Link
+              to="/music"
+              className={`block p-3 rounded-lg transition-colors ${location.pathname === "/music"
+                ? "bg-purple-600"
+                : "hover:bg-gray-700"
+                }`}
+            >
+              <Headphones className="w-6 h-6" />
             </Link>
 
           </div>
