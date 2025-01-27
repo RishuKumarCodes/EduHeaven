@@ -2,13 +2,12 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import StudyRoom from './pages//studyRoom/StudyRoom.jsx';
 import Dashboard from './pages/Dashboard';
-import GameRoom from './pages/GameRoom';
+import GameRoom from './pages/gameRoom/GameRoutes.jsx';
 import MusicRoom from './pages/MusicRoom'
 import Signout from './Auth/Signout';
 import SignUp from './Auth/Authenticate.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
 import PageNotFound from '../src/pages/PageNotFound'
-
 function App() {
   const token = localStorage.getItem("token"); 
 
@@ -18,12 +17,10 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<StudyRoom />} />
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="games" element={<GameRoom />} />
+          <Route path="games/*" element={<GameRoom />} />
           <Route path="music" element={<MusicRoom />} />
           <Route path="authenticate" element={<SignUp />} />
-          {/* Unnecessary / removed. http://localhost:5173/signout loads after this, button is inactive right now */}
           <Route path="signout" element={<Signout />} /> 
-          {/* Conditionally render /profile route */}
         {token && (
           <Route path="profile" element={<ProfilePage />} />
         )}

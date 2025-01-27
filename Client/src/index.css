@@ -64,3 +64,30 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* code below is only and only for tic-tac-toe. nothing else. ------------------------------------------------------*/
+
+:root {
+  --primary: #8b5cf6;
+  --secondary: #7c3aed;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  @apply bg-gray-900 text-white;
+}
+
+.board-cell {
+  @apply w-24 h-24 border-2 border-purple-500 flex items-center justify-center text-4xl font-bold cursor-pointer transition-all duration-200 bg-gray-800;
+}
+
+.board-cell:hover {
+  @apply bg-gray-700;
+}
+
+.winning-cell {
+  @apply bg-purple-900;
+}
+/* ------------------------------------------------------------------------------------------------------------------ */
