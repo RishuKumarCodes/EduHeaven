@@ -16,6 +16,7 @@ interface Projectile {
   id: number;
   position: { x: number; y: number };
   targetEnemy: number;
+  direction: { x: number; y: number };
 }
 
 interface PowerUp {

@@ -6,21 +6,29 @@ import { Link } from "react-router-dom";
 function GameRoom() {
   const games = [
     {
+      name: "Space-Type-2",
+      difficulty: "Medium",
+      path: "space-type-2",
+      img: "./spaceType.svg",
+    },
+    {
       name: "Hungry Snake",
       difficulty: "Easy",
       path: "snake",
+      img: "./snake.svg",
     },
     {
       name: "Tic-Tac-Toe",
       difficulty: "Medium",
       path: "tic-tac-toe",
+      img: "./ticTacToe.svg",
     },
     {
-      name: "Space-Type",
+      name: "typing-game-old",
       difficulty: "Medium",
       path: "typing-game",
+      img: "./spaceType.svg",
     },
-
   ];
   return (
     <>
@@ -53,82 +61,47 @@ function GameRoom() {
       </div>
 
       {/* games */}
-      <div className="grid grid-cols-3 gap-8">
-        {games.map((game) => (
-          <Link
-            key={game.name}
-            to={game.path}
-            className="bg-gray-800 p-6 rounded-xl transition duration-200"
-          >
-            <div className="flex justify-between items-start mb-4">
-              <h3 className="font-semibold">{game.name}</h3>
-              <div className="flex">
-                {[1, 2, 3].map((star) => (
-                  <Star
-                    key={star}
-                    className={`w-4 h-4 ${
-                      star <= game.difficulty.length
-                        ? "text-yellow-500"
-                        : "text-gray-600"
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
-            <div className="flex items-center gap-2 text-gray-400 text-sm mb-4">
-              <Users className="w-4 h-4" />
-              <span>single-player</span>
-            </div>
-            <div className="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-center">
-              Start Game
-            </div>
-          </Link>
-        ))}
-      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-8">
+  {games.map((game) => (
+    <Link
+      key={game.name}
+      to={game.path}
+      className="bg-gray-800 flex gap-3 break-words p-6 rounded-xl transition duration-200 hover:scale-105"
+    >
+      {game.img && (
+        <img
+          src={game.img}
+          alt={`${game.name} thumbnail`}
+          className="h-full p-4 opacity-90 "
+        />
+      )}
+      <div className="flex flex-col flex-1 justify-center p-4 h-[130px]">
+        <h3 className="text-xl font-bold pb-1">{game.name}</h3>
 
-        {/* notice */}
-      <div className="space-y-8 mt-8">
-        <div className="alert rounded-md p-5 bg-gray-800">
-          <h1>realtime multiplayer games are comming soon!</h1>
+        <div className="flex items-center gap-2 text-gray-400 text-sm mb-4">
+          <Users className="w-4 h-4" />
+          <span>single-player</span>
         </div>
-
-        {/* Game List */}
-        <div className="grid grid-cols-3 gap-8">
-          {[
-            { name: "Quiz Master", players: 0, difficulty: "Medium" },
-            // { name: "Memory Match", players: 0, difficulty: "Easy" },
-            // { name: "Logic Puzzle", players: 0, difficulty: "Hard" },
-          ].map((game) => (
-            <div key={game.name} className="bg-gray-800 p-6 rounded-xl">
-              <div className="flex justify-between items-start mb-4">
-                <h3 className="font-semibold">{game.name}</h3>
-                <div className="flex">
-                  {[1, 2, 3].map((star) => (
-                    <Star
-                      key={star}
-                      className={`w-4 h-4 ${
-                        star <= game.difficulty.length
-                          ? "text-yellow-500"
-                          : "text-gray-600"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-              <div className="flex items-center gap-2 text-gray-400 text-sm mb-4">
-                <Users className="w-4 h-4" />
-                <span>{game.players} playing</span>
-              </div>
-              <button className="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg w-full">
-                comming soon!
-              </button>
-            </div>
+        <div className="flex">
+          {[1, 2, 3].map((star) => (
+            <Star
+              key={star}
+              className={`w-4 h-4 ${
+                star <= game.difficulty.length
+                  ? "text-yellow-500"
+                  : "text-gray-600"
+              }`}
+            />
           ))}
         </div>
-
-        {/* breathing-space */}
-        <div className="h-[200px]"></div>
       </div>
+    </Link>
+  ))}
+</div>
+
+
+      {/* breathing-space */}
+      <div className="h-[200px]"></div>
     </>
   );
 }
