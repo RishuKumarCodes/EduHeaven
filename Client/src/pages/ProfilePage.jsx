@@ -111,7 +111,7 @@ const ProfilePage = () => {
           <div className="flex justify-between items-center py-4 border-b border-gray-200">
             <div>
               <label className="block text-sm font-semibold text-gray-300">User ID</label>
-              <div className="">{user.userId}</div>
+              <div className="">{user._id}</div>
             </div>
           </div>
         </div>
