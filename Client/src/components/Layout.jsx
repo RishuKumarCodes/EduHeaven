@@ -1,12 +1,13 @@
 import React from 'react'
-import { Outlet, Link, useLocation } from 'react-router-dom'
+import { Outlet, Link, useLocation} from 'react-router-dom'
 import {
   BarChart2,
   BookOpen,
   GamepadIcon,
   LogIn,
   User,
-  Headphones
+  Headphones,
+  BadgeInfo
 } from 'lucide-react'
 
 function Layout () {
@@ -68,6 +69,17 @@ function Layout () {
               }`}
             >
               <Headphones className='w-6 h-6' />
+            </Link>
+            <hr />
+            <Link
+              to='/project-details'
+              className={`block p-3 rounded-lg transition-colors ${
+                location.pathname === '/project-details'
+                  ? 'bg-purple-600'
+                  : 'hover:bg-gray-700'
+              }`}
+            >
+              <BadgeInfo className='w-6 h-6' />
             </Link>
           </div>
         </div>
