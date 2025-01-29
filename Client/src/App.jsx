@@ -8,6 +8,8 @@ import Signout from './Auth/Signout';
 import SignUp from './Auth/Authenticate.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
 import PageNotFound from '../src/pages/PageNotFound'
+import ProjectInfo from "../src/pages/ProjectInfo"
+
 function App() {
   const token = localStorage.getItem("token"); 
 
@@ -21,6 +23,7 @@ function App() {
           <Route path="music" element={<MusicRoom />} />
           <Route path="authenticate" element={<SignUp />} />
           <Route path="signout" element={<Signout />} /> 
+          <Route path="project-details" element={<ProjectInfo />} /> 
         {token && (
           <Route path="profile" element={<ProfilePage />} />
         )}
