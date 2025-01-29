@@ -43,6 +43,7 @@ export const login = async (req, res) => {
       return res.status(422).json({ error: "Please fill all the fields" });
     }
     const user = await User.findOne({ Email });
+    
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -91,14 +92,14 @@ export const logout = async (req, res) => {
 
 export const getUserDetails = async (req, res) => {
   try {
-    const userId = req.parms;
-    console.log(userId);
+    const userId = req.query.id;  
      
     if (!userId || userId === "undefined") {
       return res
         .status(400)
         .json({ error: "User ID is required and cannot be undefined" });
     }
+
     const user = await User.findById(userId).select("-Password");
      
     if (!user) {
@@ -106,10 +107,10 @@ export const getUserDetails = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    console.log("User details found:", user); // Log user details only if found
     return res.status(200).json(user);
   } catch (error) {
     console.error("Error fetching user details:", error);
     res.status(500).json({ error: "Failed to fetch user details" });
   }
 };
+
