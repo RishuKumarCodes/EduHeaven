@@ -8,8 +8,6 @@ import TimerComponent from "./TimerComponent.jsx";
 import NotesComponent from "./NotesComponent.jsx";
 import TodoComponent from "./TodoComponent.jsx";
 
-
-
 // import axios from "axios";
 
 function StudyRoom() {
