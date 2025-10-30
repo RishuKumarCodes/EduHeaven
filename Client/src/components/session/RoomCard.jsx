@@ -10,7 +10,6 @@ import {
   LogOut,
   Info,
   Lock,
-  X,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -22,6 +21,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import ConfirmLeaveRoomModal from "@/components/ConfirmLeaveRoomModal";
+import PopupContainer from "@/components/ui/Popup";
 
 export default function RoomCard({
   room,
@@ -329,69 +329,58 @@ export default function RoomCard({
 
       {/* ---- Info Popup ---- */}
       {showInfoPopup && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-3xl">
-          <div className="relative bg-white text-black p-6 rounded-2xl shadow-lg w-[28rem] max-h-[80vh] overflow-y-auto">
-            <button
-              onClick={() => setShowInfoPopup(false)}
-              className="absolute top-3 right-3 text-gray-600 hover:text-black"
-            >
-              <X size={20} />
-            </button>
-
-            <h3 className="text-xl font-semibold mb-4 text-center">{room.name}</h3>
-
-            {/* Owner Section */}
-            <div className="mb-6">
-              <h4 className="font-semibold mb-2">Room Owner</h4>
-              <div className="border rounded-xl p-3 flex items-center gap-3 w-full">
-                <img
-                  src={room.createdBy?.ProfilePicture}
-                  alt="Owner"
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-                <div>
-                  <p className="font-medium">
-                    {room.createdBy ? room.createdBy.Username : "Unknown Owner"}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    {room.createdBy?.Bio || "No bio available"}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Members Section */}
-            <div className="mb-6">
-              <h4 className="font-semibold mb-2">Members</h4>
-              <div className="flex flex-col gap-3">
-                {room.members && room.members.length > 0 ? (
-                  room.members.map((m, i) => (
-                    <div
-                      key={i}
-                      className="border rounded-xl p-3 flex items-center gap-3 bg-gray-50 w-full"
-                    >
-                      <img
-                        src={m?.ProfilePicture}
-                        alt="Member"
-                        className="w-10 h-10 rounded-full object-cover"
-                      />
-                      <div>
-                        <p className="font-medium text-sm">
-                          {m?.Username?.trim() || "Member"}
-                        </p>
-                        <p className="text-xs text-gray-600 line-clamp-2">
-                          {m?.Bio || "No bio available"}
-                        </p>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-sm text-gray-600">No members yet</p>
-                )}
+        <PopupContainer title={room.name} onClose={() => setShowInfoPopup(false)} width="96">
+          {/* Owner Section */}
+          <div className="mb-6">
+            <h4 className="font-semibold mb-2">Room Owner</h4>
+            <div className="border rounded-xl p-3 flex items-center gap-3 w-full">
+              <img
+                src={room.createdBy?.ProfilePicture}
+                alt="Owner"
+                className="w-12 h-12 rounded-full object-cover"
+              />
+              <div>
+                <p className="font-medium">
+                  {room.createdBy ? room.createdBy.Username : "Unknown Owner"}
+                </p>
+                <p className="text-sm text-gray-600">
+                  {room.createdBy?.Bio || "No bio available"}
+                </p>
               </div>
             </div>
           </div>
-        </div>
+
+          {/* Members Section */}
+          <div className="mb-6">
+            <h4 className="font-semibold mb-2">Members</h4>
+            <div className="flex flex-col gap-3">
+              {room.members && room.members.length > 0 ? (
+                room.members.map((m, i) => (
+                  <div
+                    key={i}
+                    className="border rounded-xl p-3 flex items-center gap-3 w-full"
+                  >
+                    <img
+                      src={m?.ProfilePicture}
+                      alt="Member"
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                    <div>
+                      <p className="font-medium text-sm">
+                        {m?.Username?.trim() || "Member"}
+                      </p>
+                      <p className="text-xs text-gray-600 line-clamp-2">
+                        {m?.Bio || "No bio available"}
+                      </p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-sm text-gray-600">No members yet</p>
+              )}
+            </div>
+          </div>
+        </PopupContainer>
       )}
     </div>
   );
