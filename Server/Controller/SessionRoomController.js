@@ -28,6 +28,8 @@ export const getRoomLists = async (req, res) => {
     
     const rooms = await SessionRoom.find()
       .sort({ createdAt: -1 })
+      .populate("createdBy", "Username ProfilePicture Bio OtherDetails")
+      .populate("members", "Username ProfilePicture Bio OtherDetails")
       .populate({
         path: "pendingRequests",
         select: "Username ProfilePicture Bio OtherDetails",
